@@ -2,6 +2,8 @@ properties([buildDiscarder(logRotator(numToKeepStr: '8'))])
 
 def label = "petclinic-${UUID.randomUUID().toString()}"
 
+def projectname = "spring-petclinic-microservices"
+
 def revision = "2.1.3-SNAPSHOT"
 
 def credentials = [usernamePassword(credentialsId: 'jcsirot.docker.devoxxfr.chelonix.org', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]
@@ -40,6 +42,9 @@ spec:
         sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-discovery-server:${revision} -f spring-petclinic-discovery-server/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8761 ."
         sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-api-gateway:${revision} -f spring-petclinic-api-gateway/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=8081 ."
         sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-hystrix-dashboard:${revision} -f spring-petclinic-hystrix-dashboard/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=7979 ."
+      }
+      stage("OWASP Dependency-Track") {        
+          sh "docker build -f deptrack.Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg DEPTRACK_MAVEN_GOAL="org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom" --build-arg DEPTRACK_HOST_URL=${label} --build-arg DEPTRACK_PROJECT_NAME=${projectname} --build-arg DEPTRACK_APIKEY=${env.DEPTRACK_APIKEY} ."        
       }
       stage("Sonar Analysis") {
         withSonarQubeEnv('sonarqube') {
