@@ -6,7 +6,6 @@ ARG DEPTRACK_PROJECT_NAME
 ARG DEPTRACK_MAVEN_GOAL
 ARG DEPTRACK_HOST_URL
 ARG DEPTRACK_APIKEY
-RUN env
 RUN mvn --batch-mode ${DEPTRACK_MAVEN_GOAL} && \
       BOM_VALUE=$(cat ./target/bom.xml |base64 -w 0 -) && \
       rm -f target/payload.json && \
