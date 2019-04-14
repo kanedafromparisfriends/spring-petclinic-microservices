@@ -12,6 +12,6 @@ RUN mvn --batch-mode ${DEPTRACK_MAVEN_GOAL} && \
       rm -f target/payload.json && \
       echo -n "{\"projectName\": \"${DEPTRACK_PROJECT_NAME}\",\"projectVersion\": \"${REVISION}\",\"autoCreate\": true, \"bom\": \"${BOM_VALUE}\"}" > target/payload.json && \
       curl -v -X "PUT" "${DEPTRACK_HOST_URL}/api/v1/bom" \
-       -H "Content-Type: application/json' \
+       -H "Content-Type: application/json" \
        -H "X-API-Key: ${DEPTRACK_APIKEY}" \
        -d @target/payload.json
