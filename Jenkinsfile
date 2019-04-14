@@ -44,7 +44,7 @@ spec:
         sh "docker build -t docker.devoxxfr.chelonix.org/jcsirot/spring-petclinic-hystrix-dashboard:${revision} -f spring-petclinic-hystrix-dashboard/Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg EXPOSED_PORT=7979 ."
       }
       stage("OWASP Dependency-Track") {        
-          sh "docker build -f deptrack.Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg DEPTRACK_MAVEN_GOAL="org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom" --build-arg DEPTRACK_HOST_URL=${label} --build-arg DEPTRACK_PROJECT_NAME=${projectname} --build-arg DEPTRACK_APIKEY=${env.DEPTRACK_APIKEY} ."        
+          sh "docker build -f deptrack.Dockerfile --build-arg BASE_ID=${BUILD_TAG} --build-arg REVISION=${revision} --build-arg DEPTRACK_MAVEN_GOAL="org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom" --build-arg DEPTRACK_HOST_URL=${env.DEPTRACK_HOST_URL} --build-arg DEPTRACK_PROJECT_NAME=${projectname} --build-arg DEPTRACK_APIKEY=${env.DEPTRACK_APIKEY} ."        
       }
       stage("Sonar Analysis") {
         withSonarQubeEnv('sonarqube') {
