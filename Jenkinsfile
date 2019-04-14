@@ -8,7 +8,7 @@ def revision = "2.1.3-SNAPSHOT"
 
 def credentials = [usernamePassword(credentialsId: 'jcsirot.docker.devoxxfr.chelonix.org', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]
 
-def deptrackApiKey = [string(credentialsId: 'deptrackapikey/', variable:'DEPTRACK_APIKEY')]
+def deptrackApiKey = [string(credentialsId: 'deptrackapikey', variable:'DEPTRACK_APIKEY')]
 
 podTemplate(label: label, yaml: """
 apiVersion: v1
